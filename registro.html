@@ -92,6 +92,13 @@
             padding: 15px;
             margin-top: 30px;
         }
+
+        #mensaje {
+            margin-top: 15px;
+            font-size: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -107,7 +114,8 @@
 
     <div class="formulario">
         <h2>Formulario de Registro</h2>
-        <form action="guardar_registro.php" method="POST">
+
+        <form id="registroForm">
             <label>Nombre completo:</label>
             <input type="text" name="nombre" required>
 
@@ -115,27 +123,54 @@
             <input type="text" name="grupo" required>
 
             <label>Especialidad:</label>
-             <select name="especialidad" required>
+            <select name="especialidad" required>
                 <option value="">Seleccione una opción</option>
                 <option value="Programación">Programación</option>
                 <option value="Mantenimiento Automotriz">Mantenimiento Automotriz</option>
                 <option value="Electricidad">Electricidad</option>
                 <option value="Mantenimiento Industrial">Mantenimiento Industrial</option>
-                 <option value="Puericultura">Puericultura</option>  
-                 <option value="Produccion de Prendas del Vestir">Produccion de Prendas del Vestir</option>  
-                  <option value="Soldadura Industrial">Soldadura Industrial</option>
-                 <option value="Inteligencia Artificial">Inteligencia Artificia</option>
-              <option value="Ciberseguridad">Ciberseguridad</option>
-              <option value="Semiconductores y Microelectronica">Semiconductores y Microelectronica</option>
-              
+                <option value="Puericultura">Puericultura</option>
+                <option value="Produccion de Prendas del Vestir">Producción de Prendas del Vestir</option>
+                <option value="Soldadura Industrial">Soldadura Industrial</option>
+                <option value="Inteligencia Artificial">Inteligencia Artificial</option>
+                <option value="Ciberseguridad">Ciberseguridad</option>
+                <option value="Semiconductores y Microelectronica">Semiconductores y Microelectrónica</option>
             </select>
 
             <button type="submit">Registrar</button>
         </form>
+
+        <p id="mensaje"></p>
     </div>
 
     <footer>
         <p>&copy; 2025 ITACE Plantel Altamira - Banda de Guerra</p>
     </footer>
+
+    <script>
+        const form = document.getElementById("registroForm");
+        const mensaje = document.getElementById("mensaje");
+
+        form.addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            const datos = new FormData(form);
+
+            const respuesta = await fetch("https://formspree.io/f/xkgaknab", {
+                method: "POST",
+                body: datos,
+                headers: { "Accept": "application/json" }
+            });
+
+            if (respuesta.ok) {
+                mensaje.textContent = "✔ Registro enviado correctamente";
+                mensaje.style.color = "green";
+                form.reset();
+            } else {
+                mensaje.textContent = "❌ Error al enviar el registro";
+                mensaje.style.color = "red";
+            }
+        });
+    </script>
 </body>
 </html>
